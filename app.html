@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sciar Tips · my tips (staff view, alpha)</title>
+<style>
+  :root{--ink:#1d2433;--muted:#5b6472;--line:#d9dee6;--bg:#f6f7f9;--card:#fff;--accent:#0b6e4f;--warn:#8a4b00;--warnbg:#fff4e5}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.5;color:var(--ink);background:var(--bg)}
+  header{background:var(--ink);color:#fff;padding:14px 16px}
+  header h1{margin:0;font-size:1.2rem}
+  header p{margin:2px 0 0;font-size:.85rem;opacity:.85}
+  main{max-width:640px;margin:0 auto;padding:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+  h2{font-size:1.1rem;margin:0 0 8px}
+  .big{font-size:2rem;font-weight:700;margin:4px 0}
+  .src{font-size:.78rem;color:var(--muted);border-top:1px dashed var(--line);margin-top:10px;padding-top:6px;font-family:ui-monospace,Consolas,monospace;word-break:break-word}
+  .tag{display:inline-block;font-size:.72rem;font-weight:600;padding:1px 8px;border-radius:99px;background:#e7f2ee;color:var(--accent);vertical-align:middle}
+  .tag.inf{background:var(--warnbg);color:var(--warn)}
+  .demo{background:var(--warnbg);border:1px solid #f0c890;border-radius:10px;padding:10px 12px;font-size:.9rem}
+  label{font-weight:600;display:block;margin:8px 0 4px}
+  select,textarea,button{font:inherit;width:100%;min-height:48px;border-radius:10px;border:1px solid var(--line);padding:10px}
+  button{background:var(--accent);color:#fff;border:0;font-weight:600;cursor:pointer;margin-top:8px}
+  button.alt{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .row{display:flex;gap:8px}.row>*{flex:1}
+  .bars .b{margin:8px 0}.bars .t{display:flex;justify-content:space-between;font-size:.9rem}
+  .bars .track{background:#eef0f3;border-radius:6px;height:14px}
+  .bars .fill{background:var(--accent);height:14px;border-radius:6px}
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th,td{text-align:right;padding:5px 4px;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  .scroll{overflow-x:auto}
+  ul.trace{list-style:none;padding:0;margin:8px 0 0}
+  ul.trace li{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0;font-size:.9rem}
+  .lang{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+  .lang button{width:auto;min-height:36px;padding:4px 12px;margin:0;font-size:.85rem}
+  .hidden{display:none}
+  footer{font-size:.8rem;color:var(--muted);text-align:center;padding:20px 12px}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <h1 data-t="title">Sciar Tips · my tips</h1>
+  <p data-t="sub">Halloran's pilot, 12 weeks (14 Aug – 5 Nov 2028). Fictional teaching case.</p>
+  <div class="lang"><button class="alt" id="lang-en" type="button">English</button><button class="alt" id="lang-pt" type="button">Português</button></div>
+</header>
+<main>
+  <div class="demo" data-t="demo">Alpha demo. In the real app you sign in and see only your own figures. Here you choose a staff member so the demo can be tested. All data are invented.</div>
+
+  <div class="card">
+    <label for="who" data-t="who">Who are you?</label>
+    <select id="who"><option value="" data-t="choose">Choose your name</option></select>
+  </div>
+
+  <div id="view" class="hidden">
+
+    <div class="card">
+      <h2 data-t="h_total">Your tips, 12 weeks</h2>
+      <div class="big" id="total"></div>
+      <div id="totalline"></div>
+      <div class="src" id="src_total"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-t="h_late">Hours that earned no tips</span> <span class="tag" data-t="observed">observed</span></h2>
+      <p data-t="late_rule">The rule: hours after 23:00 earn no points, so they earn no share of the tips.</p>
+      <div class="big" id="late"></div>
+      <div id="lateline"></div>
+      <div class="src" id="src_late"></div>
+      <p id="whatif" style="margin-top:12px"></p>
+      <div class="src" id="src_whatif"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-t="h_rate">Tips per hour worked</span> <span class="tag" data-t="observed">observed</span></h2>
+      <p data-t="rate_note">You, compared with teams. Teams are shown only as groups of 3 or more people, so no colleague can be identified.</p>
+      <div class="bars" id="bars"></div>
+      <div class="src" id="src_rate"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-t="h_pool">Did all card tips reach the pool?</span> <span class="tag" data-t="observed">observed</span></h2>
+      <div id="pool"></div>
+      <div class="src" id="src_pool"></div>
+    </div>
+
+    <div class="card">
+      <h2><span data-t="h_sc">Service charge (not tips)</span> <span class="tag" data-t="observed">observed</span></h2>
+      <div id="sc"></div>
+      <div class="src" id="src_sc"></div>
+    </div>
+
+    <div class="card">
+      <h2 data-t="h_week">Week by week</h2>
+      <div class="scroll"><table id="weeks"></table></div>
+      <div class="src" id="src_week"></div>
+    </div>
+
+    <div class="card" id="concern">
+      <h2 data-t="h_ask">Ask a question about your pay</h2>
+      <p data-t="ask_who"><strong>Who sees this:</strong> only Sciar's support team. Not your manager, not the owner, not your colleagues. The owner only sees how many questions came in, and only when 3 or more people have asked. No names, no words.</p>
+      <div class="row">
+        <button type="button" class="alt quick" data-q="q1" data-t="q1">I don't understand my pay</button>
+        <button type="button" class="alt quick" data-q="q2" data-t="q2">My late hours</button>
+      </div>
+      <label for="msg" data-t="msg_label">Your question (any language is fine)</label>
+      <textarea id="msg" rows="3"></textarea>
+      <button type="button" id="send" data-t="send">Send to Sciar</button>
+      <p class="demo" style="margin-top:10px" data-t="sim">Simulated: in this alpha your question is saved only in this browser on this phone. Nothing is sent anywhere.</p>
+      <h2 style="margin-top:14px" data-t="h_trace">Your questions</h2>
+      <ul class="trace" id="trace"></ul>
+    </div>
+  </div>
+</main>
+<footer>
+  <span data-t="foot">Every number on this page is computed live from data/payouts.csv and data/takings.csv (loaded as data/payouts.js and data/takings.js). Labels: observed = in the data; inferred = our calculation.</span><br>
+  <a href="index.html" data-t="home">About Sciar Tips</a>
+</footer>
+
+<script src="data/payouts.js"></script>
+<script src="data/takings.js"></script>
+<script>
+(function(){
+  "use strict";
+  var T = {
+    en:{},
+    pt:{
+      title:"Sciar Tips · as minhas gorjetas",
+      sub:"Piloto no Halloran's, 12 semanas (14 ago – 5 nov 2028). Caso fictício para ensino.",
+      demo:"Versão de demonstração. Na app real entra com a sua conta e vê só os seus números. Aqui escolhe um nome para testar. Todos os dados são inventados.",
+      who:"Quem é você?", choose:"Escolha o seu nome",
+      h_total:"As suas gorjetas, 12 semanas", observed:"observado", inferred:"calculado",
+      h_late:"Horas que não ganharam gorjetas",
+      late_rule:"A regra: as horas depois das 23:00 não ganham pontos, por isso não ganham parte das gorjetas.",
+      h_rate:"Gorjetas por hora trabalhada",
+      rate_note:"Você, comparado com as equipas. As equipas aparecem só em grupos de 3 ou mais pessoas, para ninguém ser identificado.",
+      h_pool:"Todas as gorjetas de cartão chegaram ao fundo?",
+      h_sc:"Taxa de serviço (não são gorjetas)",
+      h_week:"Semana a semana",
+      h_ask:"Fazer uma pergunta sobre o seu pagamento",
+      ask_who:"<strong>Quem vê isto:</strong> só a equipa de apoio da Sciar. Não o seu chefe, não o dono, não os colegas. O dono só vê quantas perguntas houve, e só quando 3 ou mais pessoas perguntaram. Sem nomes, sem texto.",
+      q1:"Não percebo o meu pagamento", q2:"As minhas horas da noite",
+      msg_label:"A sua pergunta (pode escrever em qualquer língua)",
+      send:"Enviar para a Sciar",
+      sim:"Simulado: nesta versão a pergunta fica guardada só neste navegador, neste telemóvel. Nada é enviado.",
+      h_trace:"As suas perguntas",
+      foot:"Todos os números são calculados a partir de data/payouts.csv e data/takings.csv. observado = está nos dados; calculado = cálculo nosso.",
+      home:"Sobre a Sciar Tips"
+    }
+  };
+  // English is the text already in the page; capture it so we can switch back.
+  document.querySelectorAll("[data-t]").forEach(function(el){ T.en[el.getAttribute("data-t")] = el.innerHTML; });
+  var lang = "en";
+  function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+
+  var P = (typeof PAYOUTS !== "undefined") ? PAYOUTS : [];
+  var K = (typeof TAKINGS !== "undefined") ? TAKINGS : [];
+  var n = function(x){ return parseFloat(x) || 0; };
+  var eur = function(x){ return "€" + x.toLocaleString("en-IE",{minimumFractionDigits:2,maximumFractionDigits:2}); };
+  var h1 = function(x){ return x.toLocaleString("en-IE",{maximumFractionDigits:1}); };
+  var MIN_GROUP = 3;
+  var GROUPS = {
+    "Floor team (floor manager, servers, bar)": ["floor manager","server","bar"],
+    "Kitchen team (chefs, kitchen porters)": ["chef","kitchen porter"]
+  };
+  var GROUPS_PT = {
+    "Floor team (floor manager, servers, bar)":"Equipa de sala (gerente, empregados, bar)",
+    "Kitchen team (chefs, kitchen porters)":"Equipa de cozinha (chefs, copeiros)"
+  };
+
+  // staff list
+  var staff = {};
+  P.forEach(function(r){ staff[r.staff_id] = r.first_name; });
+  var sel = document.getElementById("who");
+  Object.keys(staff).sort().forEach(function(id){
+    var o = document.createElement("option"); o.value = id; o.textContent = staff[id] + " (" + id + ")"; sel.appendChild(o);
+  });
+
+  function sum(rows, k){ return rows.reduce(function(a,r){ return a + n(r[k]); }, 0); }
+
+  function render(){
+    var id = sel.value;
+    document.getElementById("view").classList.toggle("hidden", !id);
+    if(!id) return;
+    var me = P.filter(function(r){ return r.staff_id === id; });
+    var myPay = sum(me,"tip_payout_eur"), myH = sum(me,"hours"), myLate = sum(me,"hours_after_2300");
+    var weeks = me.length;
+
+    document.getElementById("total").textContent = eur(myPay);
+    document.getElementById("totalline").textContent = (lang==="pt")
+      ? weeks + " pagamentos às segundas-feiras · " + h1(myH) + " horas trabalhadas"
+      : weeks + " Monday payouts · " + h1(myH) + " hours worked";
+    document.getElementById("src_total").textContent =
+      "data/payouts.csv · filter staff_id = " + id + " · " + weeks + " rows · sum(tip_payout_eur), sum(hours)";
+
+    // hidden figure 1: late hours that earned nothing
+    var pct = myH ? myLate/myH*100 : 0;
+    document.getElementById("late").textContent = h1(myLate) + (lang==="pt" ? " horas" : " hours");
+    document.getElementById("lateline").textContent = (lang==="pt")
+      ? h1(pct) + "% das suas horas não ganharam pontos."
+      : h1(pct) + "% of your hours earned no points.";
+    document.getElementById("src_late").textContent =
+      "data/payouts.csv · filter staff_id = " + id + " · sum(hours_after_2300) / sum(hours)";
+
+    // inferred: what the same pool would have paid if late hours had earned points (others get less: pool is fixed)
+    var extra = 0;
+    me.forEach(function(r){
+      var wk = P.filter(function(x){ return x.week === r.week; });
+      var totPts = sum(wk,"points"), pool = n(r.week_pool_eur);
+      var add = n(r.hours_after_2300) * n(r.points_per_hour);
+      extra += pool * (n(r.points)+add)/(totPts+add) - pool * n(r.points)/totPts;
+    });
+    document.getElementById("whatif").innerHTML = '<span class="tag inf">'+t("inferred")+'</span> ' + ((lang==="pt")
+      ? "Se essas horas tivessem ganho pontos (e mais nada mudasse), a sua parte teria sido cerca de <strong>" + eur(extra) + "</strong> maior. O fundo é fixo, por isso os colegas receberiam menos."
+      : "If those hours had earned points (and nothing else changed), your share would have been about <strong>" + eur(extra) + "</strong> more. The pool is fixed, so colleagues would get less.");
+    document.getElementById("src_whatif").textContent =
+      "inferred · per week: week_pool_eur × (points + hours_after_2300 × points_per_hour) / (week total points + same) − actual share; summed over your " + weeks + " weeks";
+
+    // hidden figure 2: tips per hour, me vs groups of >= 3
+    var bars = [{label:(lang==="pt"?"Você":"You"), v: myH? myPay/myH : 0, people:null}];
+    var srcBits = ["you: staff_id = "+id];
+    Object.keys(GROUPS).forEach(function(g){
+      var rows = P.filter(function(r){ return GROUPS[g].indexOf(r.role) > -1; });
+      var people = {}; rows.forEach(function(r){ people[r.staff_id]=1; });
+      var count = Object.keys(people).length;
+      // smallest weekly headcount, so a group never shrinks below 3 in any week
+      var minWeek = Infinity, byWeek = {};
+      rows.forEach(function(r){ (byWeek[r.week]=byWeek[r.week]||{})[r.staff_id]=1; });
+      Object.keys(byWeek).forEach(function(w){ minWeek = Math.min(minWeek, Object.keys(byWeek[w]).length); });
+      if(minWeek < MIN_GROUP) return; // privacy rule: never show a group smaller than 3
+      var hrs = sum(rows,"hours"), pay = sum(rows,"tip_payout_eur"), late = sum(rows,"hours_after_2300");
+      bars.push({label:(lang==="pt"?GROUPS_PT[g]:g), v: pay/hrs, people:count, late: late/hrs*100});
+      srcBits.push("role in [" + GROUPS[g].join(", ") + "] (" + count + " people, at least " + minWeek + " every week)");
+    });
+    var max = Math.max.apply(null, bars.map(function(b){ return b.v; })) || 1;
+    document.getElementById("bars").innerHTML = bars.map(function(b){
+      var extraTxt = b.people ? " · " + h1(b.late) + (lang==="pt" ? "% horas sem pontos" : "% of hours unpointed") : "";
+      return '<div class="b"><div class="t"><span>'+b.label+'</span><strong>'+eur(b.v)+'/h</strong></div>'+
+        '<div class="track"><div class="fill" style="width:'+(b.v/max*100).toFixed(1)+'%"></div></div>'+
+        (extraTxt ? '<div style="font-size:.8rem;color:var(--muted)">'+extraTxt.slice(3)+'</div>' : '')+'</div>';
+    }).join("");
+    document.getElementById("src_rate").textContent =
+      "data/payouts.csv · sum(tip_payout_eur) / sum(hours), all 12 weeks · " + srcBits.join(" · ") + " · groups under 3 people are not shown";
+
+    // pool check: card tips (takings) vs pool (payouts), per week
+    var wks = {}; K.forEach(function(r){ wks[r.week] = (wks[r.week]||0) + n(r.card_tips_eur); });
+    var pools = {}; P.forEach(function(r){ pools[r.week] = n(r.week_pool_eur); });
+    var match = 0, total = 0, poolTot = 0, wkCount = 0;
+    Object.keys(pools).forEach(function(w){ wkCount++; total += (wks[w]||0); poolTot += pools[w]; if(Math.abs((wks[w]||0)-pools[w]) < 0.01) match++; });
+    document.getElementById("pool").innerHTML = (lang==="pt")
+      ? "<p><strong>Sim.</strong> Em " + match + " de " + wkCount + " semanas, o fundo foi igual às gorjetas de cartão desse período.</p><p>Gorjetas de cartão: <strong>" + eur(total) + "</strong> · Fundo: <strong>" + eur(poolTot) + "</strong></p>"
+      : "<p><strong>" + (match===wkCount ? "Yes." : "Not every week.") + "</strong> In " + match + " of " + wkCount + " weeks the pool equalled that week's card tips.</p><p>Card tips: <strong>" + eur(total) + "</strong> · Pool: <strong>" + eur(poolTot) + "</strong></p>";
+    document.getElementById("src_pool").textContent =
+      "data/takings.csv · sum(card_tips_eur) grouped by week (" + K.length + " rows) vs data/payouts.csv · week_pool_eur per week";
+
+    // service charge
+    var sc = sum(K,"service_charge_eur"), to = {};
+    K.forEach(function(r){ var k = r.service_charge_paid_to || "(blank)"; to[k] = (to[k]||0) + n(r.service_charge_eur); });
+    var toTxt = Object.keys(to).map(function(k){ return k + ": " + eur(to[k]); }).join(" · ");
+    document.getElementById("sc").innerHTML = (lang==="pt")
+      ? "<p>A taxa de serviço de 12,5% (mesas de 6 ou mais) é separada do fundo de gorjetas, segundo a regra do Halloran's.</p><p>Total no piloto: <strong>" + eur(sc) + "</strong>. Registado como pago a: " + toTxt + ".</p>"
+      : "<p>Under Halloran's rule, the 12.5% service charge (tables of 6 or more) is separate from the tip pool.</p><p>Pilot total: <strong>" + eur(sc) + "</strong>. Recorded as paid to: " + toTxt + ".</p>";
+    document.getElementById("src_sc").textContent =
+      "data/takings.csv · all " + K.length + " rows · sum(service_charge_eur) grouped by service_charge_paid_to";
+
+    // week table (own figures only)
+    var head = (lang==="pt") ? ["Sem.","Horas","Após 23h","Pontos","Gorjetas","€/h"] : ["Wk","Hours","After 23:00","Points","Tips","€/h"];
+    document.getElementById("weeks").innerHTML = "<tr>" + head.map(function(h){ return "<th>"+h+"</th>"; }).join("") + "</tr>" +
+      me.map(function(r){ return "<tr><td>"+r.week+"</td><td>"+r.hours+"</td><td>"+r.hours_after_2300+"</td><td>"+r.points+"</td><td>"+eur(n(r.tip_payout_eur))+"</td><td>"+eur(n(r.tip_payout_eur)/n(r.hours))+"</td></tr>"; }).join("");
+    document.getElementById("src_week").textContent = "data/payouts.csv · filter staff_id = " + id + " · your rows only; no colleague's row is shown";
+
+    renderTrace();
+  }
+
+  // concerns: stored in this browser only (simulated)
+  var mem = {};
+  function key(){ return "sciar-concerns-" + sel.value; }
+  function load(){ try { return JSON.parse(localStorage.getItem(key()) || "[]"); } catch(e){ return mem[key()] || []; } }
+  function save(list){ try { localStorage.setItem(key(), JSON.stringify(list)); } catch(e){ mem[key()] = list; } }
+  function esc(s){ var d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+  function renderTrace(){
+    var list = load(), ul = document.getElementById("trace");
+    if(!list.length){ ul.innerHTML = "<li>" + (lang==="pt" ? "Ainda não fez perguntas." : "You have not asked anything yet.") + "</li>"; return; }
+    ul.innerHTML = list.slice().reverse().map(function(c){
+      return "<li><strong>" + esc(c.when) + "</strong><br>" + esc(c.text) + "<br><span class='tag'>" +
+        (lang==="pt" ? "Recebido pela Sciar (simulado) · visível só para si e para a Sciar" : "Received by Sciar (simulated) · visible only to you and Sciar") + "</span></li>";
+    }).join("");
+  }
+  document.querySelectorAll(".quick").forEach(function(b){
+    b.addEventListener("click", function(){ document.getElementById("msg").value = b.textContent; });
+  });
+  document.getElementById("send").addEventListener("click", function(){
+    var box = document.getElementById("msg"), text = box.value.trim();
+    if(!text || !sel.value) return;
+    var list = load();
+    list.push({ when: new Date().toLocaleString("en-IE"), text: text });
+    save(list); box.value = ""; renderTrace();
+  });
+
+  function setLang(l){
+    lang = l; document.documentElement.lang = l;
+    document.querySelectorAll("[data-t]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-t")); });
+    render();
+  }
+  document.getElementById("lang-en").addEventListener("click", function(){ setLang("en"); });
+  document.getElementById("lang-pt").addEventListener("click", function(){ setLang("pt"); });
+  sel.addEventListener("change", render);
+
+  if(!P.length){ document.querySelector("main").insertAdjacentHTML("afterbegin", '<div class="demo">Data did not load: check that data/payouts.js and data/takings.js are in the repository.</div>'); }
+})();
+</script>
+</body>
+</html>

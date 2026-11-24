@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sciar Tips · for restaurant owners</title>
+<style>
+  :root{--ink:#1d2433;--muted:#5b6472;--line:#d9dee6;--accent:#0b6e4f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.55;color:var(--ink);background:#f6f7f9}
+  .wrap{max-width:680px;margin:0 auto;padding:20px 16px}
+  .note{font-size:.8rem;color:var(--muted);background:#fff4e5;border:1px solid #f0c890;border-radius:8px;padding:6px 10px}
+  h1{font-size:1.8rem;line-height:1.2;margin:18px 0 8px}
+  .lead{font-size:1.1rem;color:var(--muted)}
+  ol.claims{list-style:none;padding:0;margin:24px 0}
+  ol.claims li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+  ol.claims strong{display:block;font-size:1.15rem}
+  sup a{text-decoration:none}
+  .cta{display:block;text-align:center;background:var(--accent);color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none;margin:10px 0}
+  .cta.alt{background:#fff;color:var(--accent);border:2px solid var(--accent)}
+  .fn{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);margin-top:28px;padding-top:10px}
+  .fn li{margin:6px 0}
+  code{font-size:.78rem;word-break:break-word}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="note">Alpha. Sciar, Halloran's and all figures here are fictional, from a teaching case set in 2028.</p>
+
+  <h1>Card tips paid to your team every Monday, under the rule you set.</h1>
+  <p class="lead">For restaurant owners in Dublin who want their staff to trust the tip split.</p>
+
+  <ol class="claims">
+    <li>
+      <strong>Every card tip reached the staff pool.</strong>
+      In our 12-week pilot with one Dublin restaurant, card tips of €31,754.13 went into a staff pool of €31,754.13, every week.<sup><a href="#f1">1</a></sup>
+    </li>
+    <li>
+      <strong>Paid out every Monday, by the owner's rule.</strong>
+      12 weekly payouts to 13 staff in the pilot, split by points per hour for each role.<sup><a href="#f2">2</a></sup>
+    </li>
+    <li>
+      <strong>Staff can see how their pay is worked out, and ask about it privately.</strong>
+      Each person sees their own tips, their hours, and team averages, in English or Portuguese, on a phone.<sup><a href="#f3">3</a></sup>
+    </li>
+  </ol>
+
+  <a class="cta" href="mailto:hello@sciar.example?subject=Sciar%20Tips%20for%20my%20restaurant">Email us to join the next pilot</a>
+  <a class="cta alt" href="app.html">See the staff view (demo)</a>
+
+  <ol class="fn">
+    <li id="f1">Source: <code>data/takings.csv</code>, sum of <code>card_tips_eur</code>, all 72 rows (€31,754.13); <code>data/payouts.csv</code>, <code>week_pool_eur</code> taken once per week for weeks 1–12 and summed (€31,754.13). Pool equals card tips in 12 of 12 weeks. The 12.5% service charge on tables of six or more is separate from the tip pool and is not included.</li>
+    <li id="f2">Source: <code>data/payouts.csv</code>, 152 rows; distinct <code>week</code> = 12; distinct <code>staff_id</code> = 13. Split rule from the pack README (Halloran's split rule).</li>
+    <li id="f3">Source: our alpha, <a href="app.html">app.html</a>, which does this today with the pilot data. Questions are simulated in the alpha (stored in the browser only).</li>
+  </ol>
+</div>
+</body>
+</html>
