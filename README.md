@@ -1,7 +1,7 @@
 # Sciar Tips: CA2
 
-**Live site (GitHub Pages):** https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/
-**Repository:** https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+**Live site (GitHub Pages):** https://priyanka050503.github.io/sciar-tips/
+**Repository:** https://github.com/priyanka050503/sciar-tips
 
 **My question:** Can the least powerful person at Halloran's see why their tips do not grow with their hours, and say so safely?
 
