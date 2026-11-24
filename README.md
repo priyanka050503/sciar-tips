@@ -59,7 +59,9 @@ I also refused Declan's "Fully compliant with Irish tips law" and Aoife's "34% r
 
 ## Part 4c: The Struggle, without AI
 
-<!-- WRITE THIS YOURSELF, 100–150 words, no AI. Include at least one commit hash. -->
+ The Struggle without AI
+
+At first I created the Sciar Tips website & staff dashboard. I created it using AI and the files uploaded in the assessment pack. During this process, I had some issues because the data files were not in the right folder, and  also I  faced problems in getting some features, such as the email button, it didn't worked properly. I edited the files to fix these issues. I also checked the AI-generated figures against the live staff page and confirmed that Liam's figures were correct: €3,006.39 for 410 hours. One of my commits, 01b5c1d1720a5600fcaa5baba05d84997b84a571, records the changes I made to the project. Next time, I would organise the files first and test all the features before publishing the website.
 
 ---
 
